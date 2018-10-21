@@ -38,6 +38,14 @@ class TestRoo < Minitest::Test
     assert_equal([41,42,43,44,45], rows[9].map(&:value))
     assert_equal(["einundvierzig", "zweiundvierzig", "dreiundvierzig", "vierundvierzig", "fuenfundvierzig"], rows[10].map(&:value))
     assert_equal([Date.new(2007,5,31),"dies hier als Date-Objekt"], rows[11].map(&:value))
+
+    rows = []
+    with_each_spreadsheet(:name=>'Bibelbund', format: :excelx) do |sheet|
+      sheet.each_row_streaming do |row|
+        rows << row
+      end
+    end
+    assert_equal(3735, rows.size)
   end
 
   def test_cells

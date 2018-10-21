@@ -10,7 +10,7 @@ module Roo
         @current_row = nil
 
         @column_started = false
-        @column_content = nil
+        # @column_content = nil
         @column_coordinate = nil
         @column_type = nil
         @column_style = nil
@@ -25,7 +25,7 @@ module Roo
       end
 
       def start_element(name, attrs = [])
-        puts "#{name} #{attrs.join(', ')} started!"
+        # puts "#{name} #{attrs.join(', ')} started!"
         case name
         when 'row'
           @current_row = []
@@ -49,19 +49,19 @@ module Roo
       end
 
       def end_element(name)
-        puts "#{name} ended"
+        # puts "#{name} including tag #{@tag_characters} ended"
         case name
         when 'row'
           @row_block.call(@current_row)
           @current_row = nil
         when 'c'
-          @current_row << create_cell_from_value if @current_row
+          @current_row << create_cell_from_value if @current_row && @column_value
           @column_started = false
           @column_coordinate = nil
           @column_value = nil
           @column_type = nil
           @column_style = nil
-          @column_content = nil
+          # @column_content = nil
           @formula = nil
         when 'v'
           @v_started = false
@@ -70,6 +70,8 @@ module Roo
           @f_started = false
           @formula = @tag_characters # MAYBE FORMULA?
         end
+
+        @tag_characters = nil
       end
 
       def characters(string)
@@ -210,7 +212,11 @@ module Roo
           Excelx::Cell.cell_class(:date).new(@column_value, @formula, excelx_type, style, hyperlink, base_date, coordinate)
         else
           # Excelx::Cell.cell_class(:number).new(cell.content, formula, excelx_type, style, hyperlink, coordinate)
+          # begin
           Excelx::Cell.cell_class(:number).new(@column_value, @formula, excelx_type, style, hyperlink, coordinate)
+          # rescue => e
+          #   puts 'crap'
+          # end
         end
       end
 
