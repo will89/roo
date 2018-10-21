@@ -8,6 +8,7 @@ module Roo
     class SheetDoc < Excelx::Extractor
       extend Forwardable
       delegate [:workbook] => :@shared
+      attr_reader :path
 
       def initialize(path, relationships, shared, options = {})
         super(path)

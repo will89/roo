@@ -13,6 +13,7 @@ module Roo
 
     ERROR_VALUES = %w(#N/A #REF! #NAME? #DIV/0! #NULL! #VALUE! #NUM!).to_set
 
+    require 'roo/excelx/worksheet_row_sax_document'
     require 'roo/excelx/shared'
     require 'roo/excelx/workbook'
     require 'roo/excelx/shared_strings'
@@ -41,7 +42,7 @@ module Roo
       sheet_options[:expand_merged_ranges] = (options[:expand_merged_ranges] || false)
       sheet_options[:no_hyperlinks] = (options[:no_hyperlinks] || false)
       shared_options = {}
-        
+
       shared_options[:disable_html_wrapper] = (options[:disable_html_wrapper] || false)
       unless is_stream?(filename_or_stream)
         file_type_check(filename_or_stream, %w[.xlsx .xlsm], 'an Excel 2007', file_warning, packed)

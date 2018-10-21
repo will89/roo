@@ -41,13 +41,20 @@ module Roo
       def each_row(options = {}, &block)
         row_count = 0
         options[:offset] ||= 0
-        @sheet.each_row_streaming do |row|
-          break if options[:max_rows] && row_count == options[:max_rows] + options[:offset] + 1
-          if block_given? && !(options[:offset] && row_count < options[:offset])
-            block.call(cells_for_row_element(row, options))
-          end
-          row_count += 1
-        end
+        #TODO: Scribble streaming logic here
+
+        parser = Nokogiri::XML::SAX::Parser.new(Roo::Excelx::WorksheetRowSaxDocument.new(@shared, block))
+
+        # Send some XML to the parser
+        parser.parse(File.open(@sheet.path))
+
+        # @sheet.each_row_streaming do |row|
+        #   break if options[:max_rows] && row_count == options[:max_rows] + options[:offset] + 1
+        #   if block_given? && !(options[:offset] && row_count < options[:offset])
+        #     block.call(cells_for_row_element(row, options))
+        #   end
+        #   row_count += 1
+        # end
       end
 
       def row(row_number)

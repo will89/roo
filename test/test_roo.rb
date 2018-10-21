@@ -18,7 +18,34 @@ class TestRoo < Minitest::Test
   include TestStyles
 
   # Cell related tests
+  def test_each_row_streaming
+    rows = []
+    with_each_spreadsheet(:name=>'numbers1', format: :excelx) do |sheet|
+      sheet.each_row_streaming do |row|
+        rows << row
+      end
+    end
+    assert_equal(12, rows.size)
+    assert_equal([1,2,3,4,10], rows[0].map(&:value))
+    assert_equal([5,6,7,8,9,"test",11], rows[1].map(&:value))
+    assert_equal([10,11,12,13,14], rows[2].map(&:value))
+    assert_equal([Date.new(1961,11,21)], rows[3].map(&:value))
+    assert_equal(["tata"], rows[4].map(&:value))
+    assert_equal(['thisisc8'], rows[5].map(&:value))
+    assert_equal(['thisisd9'], rows[6].map(&:value))
+    assert_equal(['thisisa11'], rows[7].map(&:value))
+    assert_equal([41,42,43,44,45], rows[8].map(&:value))
+    assert_equal([41,42,43,44,45], rows[9].map(&:value))
+    assert_equal(["einundvierzig", "zweiundvierzig", "dreiundvierzig", "vierundvierzig", "fuenfundvierzig"], rows[10].map(&:value))
+    assert_equal([Date.new(2007,5,31),"dies hier als Date-Objekt"], rows[11].map(&:value))
+  end
+
   def test_cells
+    with_each_spreadsheet(:name=>'numbers1') do |oo|
+      oo.each_row_streaming do |foo|
+        foo
+      end
+    end
     with_each_spreadsheet(:name=>'numbers1') do |oo|
       # warum ist Auswaehlen erstes sheet hier nicht
       # mehr drin?
