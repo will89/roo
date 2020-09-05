@@ -34,5 +34,11 @@ class TestRooExcelxCellDate < Minitest::Test
   def test_value
     cell = date_cell.new('41791', nil, [:numeric_or_formula, 'mm-dd-yy'], 6, nil, base_date, nil)
     assert_equal ::Date.new(2014, 06, 01), cell.value
+
+    cell = date_cell.new('', nil, [:numeric_or_formula, 'mm-dd-yy'], 6, nil, base_date, nil)
+    assert_equal ::Date.new(1899, 12, 30), cell.value
+
+    cell = date_cell.new(nil, nil, [:numeric_or_formula, 'mm-dd-yy'], 6, nil, base_date, nil)
+    assert_equal ::Date.new(1899, 12, 30), cell.value
   end
 end

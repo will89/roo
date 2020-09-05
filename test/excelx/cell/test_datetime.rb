@@ -35,6 +35,17 @@ class TestRooExcelxCellDateTime < Minitest::Test
     end
   end
 
+  def test_value
+    cell = datetime.new('42029.34375', nil, ['mm-dd-yy'], nil, nil, base_timestamp, nil)
+    assert_equal ::DateTime.new(2015, 1, 25, 8, 15, 0), cell.value
+
+    cell = datetime.new('', nil, ['mm-dd-yy'], nil, nil, base_timestamp, nil)
+    assert_equal ::DateTime.new(1899, 12, 30), cell.value
+
+    cell = datetime.new(nil, nil, ['mm-dd-yy'], nil, nil, base_timestamp, nil)
+    assert_equal ::DateTime.new(1899, 12, 30), cell.value
+  end
+
   def datetime
     Roo::Excelx::Cell::DateTime
   end

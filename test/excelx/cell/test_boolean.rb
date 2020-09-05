@@ -32,5 +32,11 @@ class TestRooExcelxCellNumber < Minitest::Test
 
     cell = boolean.new '0', nil, nil, nil, nil
     assert_equal false, cell.value
+
+    cell = boolean.new '', nil, nil, nil, nil
+    assert_equal false, cell.value
+
+    cell = boolean.new nil, nil, nil, nil, nil
+    assert_equal false, cell.value
   end
 end

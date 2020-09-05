@@ -35,6 +35,16 @@ class TestRooExcelxCellNumber < Minitest::Test
     assert_kind_of(Float, cell.value)
   end
 
+  def test_empty_value
+    cell = Roo::Excelx::Cell::Number.new '', nil, ['0.00%'], nil, nil, nil
+    assert_kind_of(Float, cell.value)
+  end
+
+  def test_nil_value
+    cell = Roo::Excelx::Cell::Number.new nil, nil, ['0.00%'], nil, nil, nil
+    assert_kind_of(Float, cell.value)
+  end
+
   def test_formats_with_negative_numbers
     [
       ['#,##0 ;(#,##0)', '(1,042)'],
